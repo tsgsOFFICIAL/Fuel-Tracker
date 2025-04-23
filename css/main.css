@@ -1,0 +1,352 @@
+/* PWA Prompt */
+#pwa-install-banner,
+#pwa-install-banner.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #pwa-install-banner.visible {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        padding: 15px;
+        box-shadow: 0px 0px 6px rgb(39, 115, 214);
+        background-color: #a8a8a8;
+        animation: slideUp .69s ease;
+        gap: .69rem;
+    }
+
+    #pwa-install-banner.animateOut {
+        animation: slideDown .69s ease;
+    }
+
+    #pwa-install-banner img {
+        width: 3.2rem;
+        aspect-ratio: 1/1;
+    }
+
+    #pwa-install-banner .content {
+        display: flex;
+        flex-flow: column nowrap;
+        font-size: 1.5rem;
+        gap: .69rem;
+    }
+
+    /* Native look */
+    #pwa-install-banner>.call-to-action>button {
+        background: rgb(46, 124, 214);
+        color: ghostwhite;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: .69rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* Remove all margins and paddings & Remove blue highlight on mobile & Change the default font-family & color */
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-family: "WorkSans", sans-serif;
+}
+
+/* Stretch to fill the entire page */
+html,
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+/* Stats section */
+.stats-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+}
+
+.stat-card p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 5px;
+    color: #3498db;
+}
+
+/* Monthly stats */
+.monthly-stats {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.monthly-stat-item:last-child {
+    border-bottom: none;
+}
+
+/* Fuel-ups section */
+.fuel-ups {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.add-btn:hover {
+    background-color: #2980b9;
+}
+
+.fuel-up-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.fuel-up-item:last-child {
+    border-bottom: none;
+}
+
+.fuel-up-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.fuel-up-date-container {
+    display: flex;
+    align-items: center;
+}
+
+.fuel-up-date {
+    font-weight: bold;
+}
+
+.fuel-up-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.fuel-up-detail {
+    background-color: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 20px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+.delete-btn {
+    color: #e74c3c;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 1.1rem;
+}
+
+.delete-btn:hover {
+    color: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .stats-section {
+        flex-direction: column;
+    }
+
+    .stat-card {
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        margin: 20% auto;
+        width: 95%;
+    }
+}
+
+/* Animations */
+@keyframes slideUp {
+    0% {
+        transform: translateY(100vh);
+        opacity: .69;
+    }
+
+    80% {
+        opacity: .69;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    80% {
+        opacity: .69;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: .69;
+    }
+}

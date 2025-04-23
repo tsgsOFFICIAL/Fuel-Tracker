@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Fuel Consumption Tracker</title>
+		<!-- Meta -->
+		<meta charset="utf-8" />
+		<meta name="description" content="Track your fuel consumption, costs, and statistics with the Fuel Consumption Tracker." />
+		<meta name="robots" content="index, follow" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- Open Graph -->
+		<meta name="og:image" content="./assets/img/logo.png" />
+		<!-- Links -->
+		<link rel="icon" href="./assets/img/logo.png" />
+		<link rel="apple-touch-icon" href="./assets/img/logo.png" />
+		<link rel="stylesheet" href="./css/main.css" />
+		<script type="text/javascript" src="./js/pwa.js" defer></script>
+		<script type="text/javascript" src="./js/app.js" defer></script>
+	</head>
+	<body>
+		<!-- PWA Install Prompt -->
+		<article id="pwa-install-banner" class="hidden">
+			<img id="pwa-close-prompt" src="/assets/img/icon-close.png" alt="close icon" loading="lazy" />
+
+			<section class="content">
+				<span class="title">FuelTracker</span>
+				<span class="description">Tracks fuel consumption, and expenses</span>
+			</section>
+
+			<section class="call-to-action">
+				<button id="pwa-install-button" type="button">Install App</button>
+			</section>
+		</article>
+
+		<!-- Main Content -->
+		<div class="container">
+			<header>
+				<h1>Fuel Consumption Tracker</h1>
+			</header>
+
+			<main>
+				<section class="stats-section">
+					<div class="stat-card">
+						<h3>Average Consumption</h3>
+						<p id="avg-consumption">0 km/l</p>
+					</div>
+					<div class="stat-card">
+						<h3>Total Distance</h3>
+						<p id="total-distance">0 km</p>
+					</div>
+					<div class="stat-card">
+						<h3>Total Cost</h3>
+						<p id="total-cost">0.00</p>
+					</div>
+				</section>
+
+				<section class="monthly-stats">
+					<h2>Monthly Statistics</h2>
+					<div id="monthly-stats-container">
+						<p class="empty-state">No data available yet</p>
+					</div>
+				</section>
+
+				<section class="fuel-ups">
+					<div class="section-header">
+						<h2>Fuel-up History</h2>
+						<button id="add-fuel-btn" class="add-btn">+</button>
+					</div>
+					<div id="fuel-ups-list">
+						<p class="empty-state">No fuel-ups recorded yet</p>
+					</div>
+				</section>
+			</main>
+
+			<div id="modal" class="modal">
+				<div class="modal-content">
+					<span class="close-btn">&times;</span>
+					<h2>Add Fuel-up</h2>
+					<form id="fuel-up-form">
+						<div class="form-group">
+							<label for="date">Date:</label>
+							<input type="date" id="date" required />
+						</div>
+						<div class="form-group">
+							<label for="liters">Liters filled:</label>
+							<input type="number" id="liters" step="0.01" min="0.1" required />
+						</div>
+						<div class="form-group">
+							<label for="cost">Total cost:</label>
+							<input type="number" id="cost" step="0.01" min="0.01" required />
+						</div>
+						<div class="form-group">
+							<label for="kilometers">Kilometers driven since last fill-up:</label>
+							<input type="number" id="kilometers" step="0.1" min="0.1" required />
+						</div>
+						<button type="submit" class="submit-btn">Save</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			if ("serviceWorker" in navigator) {
+				window.addEventListener("load", () => {
+					navigator.serviceWorker
+						.register("/pwa-sw.js", { scope: "." })
+						.then((res) => console.log("service worker registered"))
+						.catch((err) => console.warn("service worker not registered", err));
+				});
+			}
+		</script>
+	</body>
+</html>
