@@ -1,15 +1,66 @@
-/* ==========================================================================
-   Reset and Base Styles
-   ========================================================================== */
+/* PWA Prompt */
+#pwa-install-banner,
+#pwa-install-banner.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #pwa-install-banner.visible {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        padding: 15px;
+        box-shadow: 0px 0px 6px rgb(39, 115, 214);
+        background-color: #a8a8a8;
+        animation: slideUp .69s ease;
+        gap: .69rem;
+    }
+
+    #pwa-install-banner.animateOut {
+        animation: slideDown .69s ease;
+    }
+
+    #pwa-install-banner img {
+        width: 3.2rem;
+        aspect-ratio: 1/1;
+    }
+
+    #pwa-install-banner .content {
+        display: flex;
+        flex-flow: column nowrap;
+        font-size: 1.5rem;
+        gap: .69rem;
+    }
+
+    /* Native look */
+    #pwa-install-banner>.call-to-action>button {
+        background: rgb(46, 124, 214);
+        color: ghostwhite;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: .69rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* Remove all margins and paddings & Remove blue highlight on mobile & Change the default font-family & color */
 *,
-*::before,
-*::after {
+*::after,
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-family: "WorkSans", sans-serif;
 }
 
+/* Stretch to fill the entire page */
 html,
 body {
     min-height: 100vh;
@@ -19,30 +70,6 @@ body {
     background-color: #f5f5f5;
 }
 
-/* ==========================================================================
-   Typography
-   ========================================================================== */
-h1,
-h2,
-h3 {
-    color: #2c3e50;
-}
-
-h1 {
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-bottom: 15px;
-}
-
-h3 {
-    font-size: 1rem;
-}
-
-/* ==========================================================================
-   Layout
-   ========================================================================== */
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -54,58 +81,22 @@ header {
     margin-bottom: 30px;
 }
 
-/* ==========================================================================
-   PWA Install Prompt
-   ========================================================================== */
-#pwa-install-banner {
-    display: none;
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
 }
 
-#pwa-install-banner.visible {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-    padding: 15px;
-    box-shadow: 0 0 6px rgb(39, 115, 214);
-    background-color: #a8a8a8;
-    animation: slideUp 0.69s ease;
-    gap: 0.69rem;
+h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
 }
 
-#pwa-install-banner.animateOut {
-    animation: slideDown 0.69s ease;
+h3 {
+    color: #2c3e50;
+    font-size: 1rem;
 }
 
-#pwa-install-banner img {
-    width: 3.2rem;
-    aspect-ratio: 1/1;
-}
-
-#pwa-install-banner .content {
-    display: flex;
-    flex-flow: column nowrap;
-    font-size: 1.5rem;
-    gap: 0.69rem;
-}
-
-#pwa-install-banner .call-to-action button {
-    background: rgb(46, 124, 214);
-    color: ghostwhite;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 0.69rem;
-    font-size: 1.2rem;
-}
-
-/* ==========================================================================
-   Statistics Section
-   ========================================================================== */
+/* Stats section */
 .stats-section {
     display: flex;
     justify-content: space-between;
@@ -131,9 +122,7 @@ header {
     color: #3498db;
 }
 
-/* ==========================================================================
-   Monthly Statistics
-   ========================================================================== */
+/* Monthly stats */
 .monthly-stats {
     background-color: white;
     border-radius: 8px;
@@ -153,9 +142,7 @@ header {
     border-bottom: none;
 }
 
-/* ==========================================================================
-   Fuel-ups Section
-   ========================================================================== */
+/* Fuel-ups section */
 .fuel-ups {
     background-color: white;
     border-radius: 8px;
@@ -233,9 +220,7 @@ header {
     padding: 20px;
 }
 
-/* ==========================================================================
-   Modal
-   ========================================================================== */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -271,9 +256,7 @@ header {
     color: #333;
 }
 
-/* ==========================================================================
-   Form Elements
-   ========================================================================== */
+/* Form */
 .form-group {
     margin-bottom: 15px;
 }
@@ -319,17 +302,31 @@ input {
     color: #c0392b;
 }
 
-/* ==========================================================================
-   Animations
-   ========================================================================== */
+/* Responsive */
+@media (max-width: 600px) {
+    .stats-section {
+        flex-direction: column;
+    }
+
+    .stat-card {
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        margin: 20% auto;
+        width: 95%;
+    }
+}
+
+/* Animations */
 @keyframes slideUp {
     0% {
         transform: translateY(100vh);
-        opacity: 0.69;
+        opacity: .69;
     }
 
     80% {
-        opacity: 0.69;
+        opacity: .69;
     }
 
     100% {
@@ -345,35 +342,11 @@ input {
     }
 
     80% {
-        opacity: 0.69;
+        opacity: .69;
     }
 
     100% {
         transform: translateY(100%);
-        opacity: 0.69;
-    }
-}
-
-/* ==========================================================================
-   Responsive Design
-   ========================================================================== */
-@media (max-width: 768px) {
-    #pwa-install-banner.visible {
-        display: flex;
-    }
-}
-
-@media (max-width: 600px) {
-    .stats-section {
-        flex-direction: column;
-    }
-
-    .stat-card {
-        margin-bottom: 10px;
-    }
-
-    .modal-content {
-        margin: 20% auto;
-        width: 95%;
+        opacity: .69;
     }
 }
