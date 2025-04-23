@@ -24,7 +24,7 @@
 	<body>
 		<!-- PWA Install Prompt -->
 		<article id="pwa-install-banner" class="hidden">
-			<img id="pwa-close-prompt" src="/assets/img/icon-close.png" alt="close icon" loading="lazy" />
+			<img id="pwa-close-prompt" src="./assets/img/icon-close.png" alt="close icon" loading="lazy" />
 			<section class="content">
 				<span class="title">FuelTracker</span>
 				<span class="description">Tracks fuel consumption, and expenses</span>
@@ -110,7 +110,7 @@
 			if ("serviceWorker" in navigator) {
 				window.addEventListener("load", () => {
 					navigator.serviceWorker
-						.register("/pwa-sw.js", { scope: "." })
+						.register("./pwa-sw.js", { scope: "." })
 						.then((res) => console.log("service worker registered"))
 						.catch((err) => console.warn("service worker not registered", err));
 				});
