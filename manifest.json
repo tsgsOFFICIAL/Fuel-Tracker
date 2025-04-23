@@ -6,8 +6,8 @@
   "background_color": "#F5F5F5",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": ".",
-  "start_url": "/",
+  "scope": "/Fuel-Tracker",
+  "start_url": "https://tsgsOFFICIAL.github.io/Fuel-Tracker/",
   "categories": [],
   "icons": [
     {

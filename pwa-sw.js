@@ -1,4 +1,4 @@
-const version = "1.0.0";
+const version = "1.0.1";
 const cacheName = "pwa-sw-cachce-fuel-tracker-v" + version;
 const assets = [
 	"/",
