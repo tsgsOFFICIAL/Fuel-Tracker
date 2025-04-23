@@ -1,4 +1,3 @@
-// DOM Elements
 const modal = document.getElementById("modal");
 const addFuelBtn = document.getElementById("add-fuel-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -9,10 +8,8 @@ const totalDistanceEl = document.getElementById("total-distance");
 const totalCostEl = document.getElementById("total-cost");
 const monthlyStatsContainer = document.getElementById("monthly-stats-container");
 
-// Initialize data from localStorage
 let fuelUps = JSON.parse(localStorage.getItem("fuelUps")) || [];
 
-// Event Listeners
 addFuelBtn.addEventListener("click", openModal);
 closeBtn.addEventListener("click", closeModal);
 fuelUpForm.addEventListener("submit", addFuelUp);
@@ -22,15 +19,12 @@ window.addEventListener("click", (e) => {
 	}
 });
 
-// Set today's date as default
 document.getElementById("date").valueAsDate = new Date();
 
-// Initial render
 renderFuelUps();
 updateStats();
 updateMonthlyStats();
 
-// Functions
 function openModal() {
 	modal.style.display = "block";
 }
@@ -47,7 +41,18 @@ function addFuelUp(e) {
 	const date = document.getElementById("date").value;
 	const liters = Number.parseFloat(document.getElementById("liters").value);
 	const cost = Number.parseFloat(document.getElementById("cost").value);
-	const kilometers = Number.parseFloat(document.getElementById("kilometers").value);
+	const odometer = Number.parseFloat(document.getElementById("odometer").value);
+
+	const lastFuelUp = fuelUps.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+	const lastOdometer = lastFuelUp ? lastFuelUp.odometer : 0;
+
+	if (lastOdometer && odometer <= lastOdometer) {
+		alert("Odometer reading must be greater than the previous reading.");
+		return;
+	}
+
+	const kilometers = lastOdometer ? odometer - lastOdometer : odometer;
+	const efficiency = lastOdometer ? kilometers / liters : null;
 
 	const newFuelUp = {
 		id: Date.now(),
@@ -55,7 +60,8 @@ function addFuelUp(e) {
 		liters,
 		cost,
 		kilometers,
-		efficiency: kilometers / liters
+		odometer,
+		efficiency
 	};
 
 	fuelUps.push(newFuelUp);
@@ -86,7 +92,6 @@ function renderFuelUps() {
 		return;
 	}
 
-	// Sort by date (newest first)
 	const sortedFuelUps = [...fuelUps].sort((a, b) => new Date(b.date) - new Date(a.date));
 
 	fuelUpsList.innerHTML = sortedFuelUps
@@ -98,7 +103,7 @@ function renderFuelUps() {
                     <span class="fuel-up-date">${formatDate(fuelUp.date)}</span>
                     <span class="delete-btn" onclick="deleteFuelUp(${fuelUp.id})">×</span>
                 </div>
-                <span class="fuel-up-efficiency">${fuelUp.efficiency.toFixed(2)} km/l</span>
+                <span class="fuel-up-efficiency">${fuelUp.efficiency ? fuelUp.efficiency.toFixed(2) + " km/l" : "N/A"}</span>
             </div>
             <div class="fuel-up-details">
                 <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
@@ -119,11 +124,12 @@ function updateStats() {
 		return;
 	}
 
+	const validFuelUps = fuelUps.filter((fuelUp) => fuelUp.efficiency !== null);
 	const totalKilometers = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.kilometers, 0);
-	const totalLiters = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.liters, 0);
+	const totalLiters = validFuelUps.reduce((sum, fuelUp) => sum + fuelUp.liters, 0);
 	const totalCost = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.cost, 0);
 
-	const avgConsumption = totalKilometers / totalLiters;
+	const avgConsumption = totalLiters > 0 ? totalKilometers / totalLiters : 0;
 
 	avgConsumptionEl.textContent = `${avgConsumption.toFixed(2)} km/l`;
 	totalDistanceEl.textContent = `${totalKilometers.toFixed(1)} km`;
@@ -136,7 +142,6 @@ function updateMonthlyStats() {
 		return;
 	}
 
-	// Group by month
 	const monthlyData = {};
 
 	fuelUps.forEach((fuelUp) => {
@@ -147,22 +152,25 @@ function updateMonthlyStats() {
 			monthlyData[monthYear] = {
 				kilometers: 0,
 				liters: 0,
-				cost: 0
+				cost: 0,
+				validEntries: 0
 			};
 		}
 
 		monthlyData[monthYear].kilometers += fuelUp.kilometers;
 		monthlyData[monthYear].liters += fuelUp.liters;
 		monthlyData[monthYear].cost += fuelUp.cost;
+		if (fuelUp.efficiency !== null) {
+			monthlyData[monthYear].validEntries += 1;
+		}
 	});
 
-	// Sort by month (newest first)
 	const sortedMonths = Object.keys(monthlyData).sort().reverse();
 
 	monthlyStatsContainer.innerHTML = sortedMonths
 		.map((month) => {
 			const data = monthlyData[month];
-			const efficiency = data.kilometers / data.liters;
+			const efficiency = data.validEntries > 0 ? data.kilometers / data.liters : null;
 			const [year, monthNum] = month.split("-");
 			const monthName = new Date(year, monthNum - 1, 1).toLocaleString("default", { month: "long" });
 
@@ -173,7 +181,7 @@ function updateMonthlyStats() {
                     <div>${data.kilometers.toFixed(1)} km | ${data.liters.toFixed(1)} liters</div>
                 </div>
                 <div>
-                    <div>${efficiency.toFixed(2)} km/l</div>
+                    <div>${efficiency ? efficiency.toFixed(2) + " km/l" : "N/A"}</div>
                     <div>${data.cost.toFixed(2)} DKK</div>
                 </div>
             </div>
