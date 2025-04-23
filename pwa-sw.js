@@ -65,9 +65,14 @@ self.addEventListener("fetch", (fetchEvent) => {
 				return networkResponse;
 			})
 			.catch(async () => {
-				// If the network is unavailable, use the cache
 				const cacheResponse = await caches.match(fetchEvent.request);
-				return cacheResponse || caches.match("/error/404");
+				return (
+					cacheResponse ||
+					new Response("Offline and no cached response available", {
+						status: 503,
+						statusText: "Service Unavailable"
+					})
+				);
 			})
 	);
 });
