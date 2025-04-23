@@ -2,22 +2,22 @@ const version = "1.0.1";
 const cacheName = "pwa-sw-cachce-fuel-tracker-v" + version;
 const assets = [
 	"/",
-	"/manifest.json",
-	"/assets/img/icon-close-min.png",
-	"/assets/img/icon-close.png",
-	"/assets/img/logo-min.png",
-	"/assets/img/logo.png",
-	"/assets/pwa/icons/128x128.png",
-	"/assets/pwa/icons/144x144.png",
-	"/assets/pwa/icons/152x152.png",
-	"/assets/pwa/icons/192x192.png",
-	"/assets/pwa/icons/384x384.png",
-	"/assets/pwa/icons/512x512.png",
-	"/assets/pwa/icons/72x72.png",
-	"/assets/pwa/icons/96x96.png",
-	"/css/main.css",
-	"/js/app.js",
-	"/js/pwa.js"
+	"./manifest.json",
+	"./assets/img/icon-close-min.png",
+	"./assets/img/icon-close.png",
+	"./assets/img/logo-min.png",
+	"./assets/img/logo.png",
+	"./assets/pwa/icons/128x128.png",
+	"./assets/pwa/icons/144x144.png",
+	"./assets/pwa/icons/152x152.png",
+	"./assets/pwa/icons/192x192.png",
+	"./assets/pwa/icons/384x384.png",
+	"./assets/pwa/icons/512x512.png",
+	"./assets/pwa/icons/72x72.png",
+	"./assets/pwa/icons/96x96.png",
+	"./css/main.css",
+	"./js/app.js",
+	"./js/pwa.js"
 ];
 
 // Cache all the files to make a PWA
