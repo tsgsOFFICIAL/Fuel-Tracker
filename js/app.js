@@ -109,6 +109,7 @@ function renderFuelUps() {
                 <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
                 <span class="fuel-up-detail">${fuelUp.liters} liters</span>
                 <span class="fuel-up-detail">${fuelUp.cost.toFixed(2)} DKK</span>
+                <span class="fuel-up-detail">${fuelUp.efficiency ? (fuelUp.cost / fuelUp.liters).toFixed(2) + " DKK/L" : "N/A"}</span>
             </div>
         </div>
     `
@@ -125,7 +126,7 @@ function updateStats() {
 	}
 
 	const validFuelUps = fuelUps.filter((fuelUp) => fuelUp.efficiency !== null);
-	const totalKilometers = fuelUps.slice(1).reduce((sum, fuelUp) => sum + fuelUp.kilometers, 0);
+	const totalKilometers = validFuelUps.reduce((sum, fuelUp) => sum + fuelUp.kilometers, 0);
 	const totalLiters = validFuelUps.reduce((sum, fuelUp) => sum + fuelUp.liters, 0);
 	const totalCost = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.cost, 0);
 
@@ -157,12 +158,12 @@ function updateMonthlyStats() {
 			};
 		}
 
-		monthlyData[monthYear].kilometers += fuelUp.kilometers;
-		monthlyData[monthYear].liters += fuelUp.liters;
-		monthlyData[monthYear].cost += fuelUp.cost;
 		if (fuelUp.efficiency !== null) {
+			monthlyData[monthYear].kilometers += fuelUp.kilometers;
+			monthlyData[monthYear].liters += fuelUp.liters;
 			monthlyData[monthYear].validEntries += 1;
 		}
+		monthlyData[monthYear].cost += fuelUp.cost;
 	});
 
 	const sortedMonths = Object.keys(monthlyData).sort().reverse();
