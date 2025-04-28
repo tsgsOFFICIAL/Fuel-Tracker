@@ -43,7 +43,14 @@ function addFuelUp(e) {
 	const cost = Number.parseFloat(document.getElementById("cost").value);
 	const odometer = Number.parseFloat(document.getElementById("odometer").value);
 
-	const lastFuelUp = fuelUps.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+	// Sort fuelUps by date descending, then by index descending for equal dates
+	const sortedFuelUps = fuelUps
+		.map((fuelUp, index) => ({ fuelUp, index }))
+		.sort((a, b) => {
+			const dateDiff = new Date(b.fuelUp.date) - new Date(a.fuelUp.date);
+			return dateDiff !== 0 ? dateDiff : b.index - a.index;
+		});
+	const lastFuelUp = sortedFuelUps[0]?.fuelUp || null;
 	const lastOdometer = lastFuelUp ? lastFuelUp.odometer : 0;
 
 	if (lastOdometer && odometer <= lastOdometer) {
@@ -53,6 +60,9 @@ function addFuelUp(e) {
 
 	const kilometers = lastOdometer ? odometer - lastOdometer : odometer;
 	const efficiency = lastOdometer ? kilometers / liters : null;
+
+	// Debug logging
+	// console.log(`Adding fuel-up: date=${date}, odometer=${odometer}, lastOdometer=${lastOdometer}, kilometers=${kilometers}, efficiency=${efficiency}`);
 
 	const newFuelUp = {
 		id: Date.now(),
@@ -74,7 +84,33 @@ function addFuelUp(e) {
 
 function deleteFuelUp(id) {
 	if (confirm("Are you sure you want to delete this entry?")) {
+		// Find the fuel-up to delete
+		const fuelUpToDelete = fuelUps.find((fuelUp) => fuelUp.id === id);
+		if (!fuelUpToDelete) return;
+
+		// Check if it's the earliest fuel-up by date or the last in the array
+		const sortedFuelUps = [...fuelUps].sort((a, b) => new Date(a.date) - new Date(b.date));
+		const isEarliest = sortedFuelUps[0]?.id === id;
+		const isLast = fuelUps[fuelUps.length - 1]?.id === id;
+
+		if (!isEarliest && !isLast) {
+			alert("Only the earliest or most recent fuel-up can be deleted to maintain accurate distance calculations.");
+			return;
+		}
+
+		// Remove the fuel-up
 		fuelUps = fuelUps.filter((fuelUp) => fuelUp.id !== id);
+
+		// If the deleted fuel-up was the earliest, adjust the new earliest to be a baseline
+		if (isEarliest && fuelUps.length > 0) {
+			const newSortedFuelUps = [...fuelUps].sort((a, b) => new Date(a.date) - new Date(b.date));
+			const newEarliest = newSortedFuelUps[0];
+			if (newEarliest && newEarliest.efficiency !== null) {
+				newEarliest.kilometers = newEarliest.odometer;
+				newEarliest.efficiency = null;
+			}
+		}
+
 		saveFuelUps();
 		renderFuelUps();
 		updateStats();
@@ -92,18 +128,22 @@ function renderFuelUps() {
 		return;
 	}
 
+	// Find the earliest fuel-up by date
+	const earliestFuelUp = [...fuelUps].sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+
+	// Sort fuel-ups by date descending for display (newest first)
 	const sortedFuelUps = [...fuelUps].sort((a, b) => new Date(b.date) - new Date(a.date));
 
 	fuelUpsList.innerHTML = sortedFuelUps
 		.map(
 			(fuelUp) => `
-        <div class="fuel-up-item" data-id="${fuelUp.id}">
+        <div class="fuel-up-item ${fuelUp.id === earliestFuelUp?.id ? "first-fuel-up" : ""}" data-id="${fuelUp.id}">
             <div class="fuel-up-header">
                 <div class="fuel-up-date-container">
                     <span class="fuel-up-date">${formatDate(fuelUp.date)}</span>
                     <span class="delete-btn" onclick="deleteFuelUp(${fuelUp.id})">×</span>
                 </div>
-                <span class="fuel-up-efficiency">${fuelUp.efficiency ? fuelUp.efficiency.toFixed(2) + " km/l" : "N/A"}</span>
+                <span class="fuel-up-efficiency">${fuelUp.efficiency ? fuelUp.efficiency.toFixed(2) + " km/l" : ""}</span>
             </div>
             <div class="fuel-up-details">
                 <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
@@ -153,6 +193,7 @@ function updateMonthlyStats() {
 			monthlyData[monthYear] = {
 				kilometers: 0,
 				liters: 0,
+				validLiters: 0,
 				cost: 0,
 				validEntries: 0
 			};
@@ -160,9 +201,10 @@ function updateMonthlyStats() {
 
 		if (fuelUp.efficiency !== null) {
 			monthlyData[monthYear].kilometers += fuelUp.kilometers;
-			monthlyData[monthYear].liters += fuelUp.liters;
+			monthlyData[monthYear].validLiters += fuelUp.liters;
 			monthlyData[monthYear].validEntries += 1;
 		}
+		monthlyData[monthYear].liters += fuelUp.liters;
 		monthlyData[monthYear].cost += fuelUp.cost;
 	});
 
@@ -171,7 +213,7 @@ function updateMonthlyStats() {
 	monthlyStatsContainer.innerHTML = sortedMonths
 		.map((month) => {
 			const data = monthlyData[month];
-			const efficiency = data.validEntries > 0 ? data.kilometers / data.liters : null;
+			const efficiency = data.validEntries > 0 ? data.kilometers / data.validLiters : null;
 			const [year, monthNum] = month.split("-");
 			const monthName = new Date(year, monthNum - 1, 1).toLocaleString("default", { month: "long" });
 
