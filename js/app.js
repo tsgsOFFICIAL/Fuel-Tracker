@@ -125,7 +125,7 @@ function updateStats() {
 	}
 
 	const validFuelUps = fuelUps.filter((fuelUp) => fuelUp.efficiency !== null);
-	const totalKilometers = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.kilometers, 0);
+	const totalKilometers = fuelUps.slice(1).reduce((sum, fuelUp) => sum + fuelUp.kilometers, 0);
 	const totalLiters = validFuelUps.reduce((sum, fuelUp) => sum + fuelUp.liters, 0);
 	const totalCost = fuelUps.reduce((sum, fuelUp) => sum + fuelUp.cost, 0);
 
