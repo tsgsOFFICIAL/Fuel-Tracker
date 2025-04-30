@@ -55,7 +55,7 @@ function addFuelUp(e) {
 	const lastOdometer = lastFuelUp ? lastFuelUp.odometer : 0;
 
 	if (lastOdometer && odometer <= lastOdometer) {
-		alert("Odometer reading must be greater than the previous reading.");
+		alert("Kilometerstand skal være højere end den forrige aflæsning.");
 		return;
 	}
 
@@ -84,7 +84,7 @@ function addFuelUp(e) {
 }
 
 function deleteFuelUp(id) {
-	if (confirm("Are you sure you want to delete this entry?")) {
+	if (confirm("Er du sikker på, at du vil slette denne post?")) {
 		// Find the fuel-up to delete
 		const fuelUpToDelete = fuelUps.find((fuelUp) => fuelUp.id === id);
 		if (!fuelUpToDelete) return;
@@ -95,7 +95,7 @@ function deleteFuelUp(id) {
 		const isLast = fuelUps[fuelUps.length - 1]?.id === id;
 
 		if (!isEarliest && !isLast) {
-			alert("Only the earliest or most recent fuel-up can be deleted to maintain accurate distance calculations.");
+			alert("Kun den tidligste eller seneste brændstofpåfyldning kan slettes for at opretholde nøjagtige distanceberegninger.");
 			return;
 		}
 
@@ -125,7 +125,7 @@ function saveFuelUps() {
 
 function renderFuelUps() {
 	if (fuelUps.length === 0) {
-		fuelUpsList.innerHTML = '<p class="empty-state">No fuel-ups recorded yet</p>';
+		fuelUpsList.innerHTML = '<p class="empty-state">Ingen brændstofpåfyldninger registreret endnu</p>';
 		return;
 	}
 
@@ -148,7 +148,7 @@ function renderFuelUps() {
             </div>
             <div class="fuel-up-details">
                 <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
-                <span class="fuel-up-detail">${fuelUp.liters} liters</span>
+                <span class="fuel-up-detail">${fuelUp.liters} liter</span>
                 <span class="fuel-up-detail">${fuelUp.cost.toFixed(2)} DKK</span>
                 <span class="fuel-up-detail">${(fuelUp.cost / fuelUp.liters).toFixed(2) + " DKK/L"}</span>
             </div>
@@ -180,8 +180,8 @@ function updateStats() {
 
 function updateMonthlyStats() {
 	if (fuelUps.length === 0) {
-		monthlyStatsContainer.innerHTML = '<p class="empty-state">No data available yet</p>';
-		return;
+		monthlyStatsContainer.innerHTML = '<p class="empty-state">Ingen data tilgængelige endnu</p>';
+		return motiv;
 	}
 
 	const monthlyData = {};
@@ -216,16 +216,16 @@ function updateMonthlyStats() {
 			const data = monthlyData[month];
 			const efficiency = data.validEntries > 0 ? data.kilometers / data.validLiters : null;
 			const [year, monthNum] = month.split("-");
-			const monthName = new Date(year, monthNum - 1, 1).toLocaleString("default", { month: "long" });
+			const monthName = new Date(year, monthNum - 1, 1).toLocaleString("da-DK", { month: "long" });
 
 			return `
             <div class="monthly-stat-item">
                 <div>
                     <strong>${monthName} ${year}</strong>
-                    <div>${data.kilometers.toFixed(1)} km | ${data.liters.toFixed(1)} liters</div>
+                    <div>${data.kilometers.toFixed(1)} km | ${data.liters.toFixed(1)} liter</div>
                 </div>
                 <div>
-                    <div>${efficiency ? efficiency.toFixed(2) + " km/l" : "N/A"}</div>
+                    <div>${efficiency ? efficiency.toFixed(2) + " km/l" : "Ikke tilgængelig"}</div>
                     <div>${data.cost.toFixed(2)} DKK</div>
                 </div>
             </div>
@@ -236,5 +236,5 @@ function updateMonthlyStats() {
 
 function formatDate(dateString) {
 	const options = { year: "numeric", month: "short", day: "numeric" };
-	return new Date(dateString).toLocaleDateString(undefined, options);
+	return new Date(dateString).toLocaleDateString("da-DK", options);
 }
