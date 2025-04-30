@@ -4,7 +4,7 @@
 		<!-- Meta Tags -->
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="Spor dit brændstofforbrug, omkostninger og statistik med Brændstofforbrugssporer." />
+		<meta name="description" content="Spor dit brændstofforbrug, omkostninger og statistik med Tanksporer." />
 		<meta name="robots" content="index, follow" />
 
 		<!-- Open Graph -->
@@ -20,14 +20,14 @@
 		<script type="text/javascript" src="./js/pwa.js" defer></script>
 		<script type="text/javascript" src="./js/app.js" defer></script>
 
-		<title>Brændstofforbrugssporer</title>
+		<title>Tanksporer</title>
 	</head>
 	<body>
 		<!-- PWA Install Prompt -->
 		<article id="pwa-install-banner" class="hidden">
 			<img id="pwa-close-prompt" src="./assets/img/icon-close.png" alt="luk ikon" loading="lazy" />
 			<section class="content">
-				<span class="title">BrændstofSporer</span>
+				<span class="title">Tanksporer</span>
 				<span class="description">Sporer brændstofforbrug og udgifter</span>
 			</section>
 			<section class="call-to-action">
@@ -39,8 +39,8 @@
 		<div class="container">
 			<header>
 				<h1>
-					Brændstofforbrugssporer
-					<p style="display: inline-block; color: rgb(23, 178, 213); font-size: 1.2rem">V. 1.0.7</p>
+					Tanksporer
+					<p style="display: inline-block; color: rgb(23, 178, 213); font-size: 1.2rem">V. 1.0.8</p>
 				</h1>
 			</header>
 
@@ -72,11 +72,11 @@
 				<!-- Fuel-up History -->
 				<section class="fuel-ups">
 					<div class="section-header">
-						<h2>Brændstofpåfyldningshistorik</h2>
+						<h2>Tank Historik</h2>
 						<button id="add-fuel-btn" class="add-btn">+</button>
 					</div>
 					<div id="fuel-ups-list">
-						<p class="empty-state">Ingen brændstofpåfyldninger registreret endnu</p>
+						<p class="empty-state">Ingen tankning registreret endnu</p>
 					</div>
 				</section>
 			</main>
@@ -85,7 +85,7 @@
 			<div id="modal" class="modal">
 				<div class="modal-content">
 					<span class="close-btn">×</span>
-					<h2>Tilføj brændstofpåfyldning</h2>
+					<h2>Tilføj tankning</h2>
 					<form id="fuel-up-form">
 						<div class="form-group">
 							<label for="date">Dato:</label>

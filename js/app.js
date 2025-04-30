@@ -95,7 +95,7 @@ function deleteFuelUp(id) {
 		const isLast = fuelUps[fuelUps.length - 1]?.id === id;
 
 		if (!isEarliest && !isLast) {
-			alert("Kun den tidligste eller seneste brændstofpåfyldning kan slettes for at opretholde nøjagtige distanceberegninger.");
+			alert("Kun den tidligste eller seneste tankning kan slettes for at opretholde nøjagtige distanceberegninger.");
 			return;
 		}
 
@@ -125,7 +125,7 @@ function saveFuelUps() {
 
 function renderFuelUps() {
 	if (fuelUps.length === 0) {
-		fuelUpsList.innerHTML = '<p class="empty-state">Ingen brændstofpåfyldninger registreret endnu</p>';
+		fuelUpsList.innerHTML = '<p class="empty-state">Ingen tankning registreret endnu</p>';
 		return;
 	}
 
