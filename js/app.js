@@ -50,6 +50,7 @@ function addFuelUp(e) {
 			const dateDiff = new Date(b.fuelUp.date) - new Date(a.fuelUp.date);
 			return dateDiff !== 0 ? dateDiff : b.index - a.index;
 		});
+
 	const lastFuelUp = sortedFuelUps[0]?.fuelUp || null;
 	const lastOdometer = lastFuelUp ? lastFuelUp.odometer : 0;
 
@@ -149,7 +150,7 @@ function renderFuelUps() {
                 <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
                 <span class="fuel-up-detail">${fuelUp.liters} liters</span>
                 <span class="fuel-up-detail">${fuelUp.cost.toFixed(2)} DKK</span>
-                <span class="fuel-up-detail">${fuelUp.efficiency ? (fuelUp.cost / fuelUp.liters).toFixed(2) + " DKK/L" : "N/A"}</span>
+                <span class="fuel-up-detail">${(fuelUp.cost / fuelUp.liters).toFixed(2) + " DKK/L"}</span>
             </div>
         </div>
     `
