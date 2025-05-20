@@ -147,7 +147,8 @@ function renderFuelUps() {
                 <span class="fuel-up-efficiency">${fuelUp.efficiency ? fuelUp.efficiency.toFixed(2) + " km/l" : ""}</span>
             </div>
             <div class="fuel-up-details">
-                <span class="fuel-up-detail">${fuelUp.kilometers} km</span>
+				<span class="fuel-up-detail">${fuelUp.kilometers} km</span>
+				<span class="fuel-up-detail">${fuelUp.odometer.toFixed(1)} km</span>
                 <span class="fuel-up-detail">${fuelUp.liters} liter</span>
                 <span class="fuel-up-detail">${fuelUp.cost.toFixed(2)} DKK</span>
                 <span class="fuel-up-detail">${(fuelUp.cost / fuelUp.liters).toFixed(2) + " DKK/L"}</span>
