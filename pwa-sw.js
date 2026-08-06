@@ -1,10 +1,8 @@
-const version = "1.1.1";
+const version = "2.0.0";
 const cacheName = "pwa-sw-cachce-fuel-tracker-v" + version;
 const assets = [
 	"/",
 	"/manifest.json",
-	"/assets/img/icon-close-min.png",
-	"/assets/img/icon-close.png",
 	"/assets/img/logo-min.png",
 	"/assets/img/logo.png",
 	"/assets/img/logo.svg",
