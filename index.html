@@ -40,7 +40,7 @@
 			<header>
 				<h1>
 					Tanksporer
-					<p style="display: inline-block; color: rgb(23, 178, 213); font-size: 1.2rem">V. 1.0.9</p>
+					<p style="display: inline-block; color: rgb(23, 178, 213); font-size: 1.2rem">V. 1.1.1</p>
 				</h1>
 			</header>
 
@@ -69,11 +69,41 @@
 					</div>
 				</section>
 
+				<!-- Efficiency Trend -->
+				<section class="trend-section">
+					<h2>Effektivitetsudvikling</h2>
+					<div id="trend-chart-container">
+						<p class="empty-state">Ingen data tilgængelige endnu</p>
+					</div>
+				</section>
+
 				<!-- Fuel-up History -->
 				<section class="fuel-ups">
 					<div class="section-header">
 						<h2>Tank Historik</h2>
-						<button id="add-fuel-btn" class="add-btn">+</button>
+						<div class="header-actions">
+							<button id="export-btn" class="icon-btn" type="button" title="Eksporter data">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+									<polyline points="7 10 12 15 17 10"></polyline>
+									<line x1="12" y1="15" x2="12" y2="3"></line>
+								</svg>
+							</button>
+							<button id="import-btn" class="icon-btn" type="button" title="Importer data">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+									<polyline points="17 8 12 3 7 8"></polyline>
+									<line x1="12" y1="3" x2="12" y2="15"></line>
+								</svg>
+							</button>
+							<input type="file" id="import-file" accept="application/json" hidden />
+							<button id="add-fuel-btn" class="add-btn" title="Tilføj tankning">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<line x1="12" y1="5" x2="12" y2="19"></line>
+									<line x1="5" y1="12" x2="19" y2="12"></line>
+								</svg>
+							</button>
+						</div>
 					</div>
 					<div id="fuel-ups-list">
 						<p class="empty-state">Ingen tankning registreret endnu</p>
@@ -85,19 +115,19 @@
 			<div id="modal" class="modal">
 				<div class="modal-content">
 					<span class="close-btn">×</span>
-					<h2>Tilføj tankning</h2>
+					<h2 id="modal-title">Tilføj tankning</h2>
 					<form id="fuel-up-form">
 						<div class="form-group">
 							<label for="date">Dato:</label>
 							<input type="date" id="date" required />
 						</div>
 						<div class="form-group">
-							<label for="liters">Liter fyldt:</label>
-							<input type="number" id="liters" step="0.01" min="0.1" required />
-						</div>
-						<div class="form-group">
 							<label for="cost">Samlede omkostninger:</label>
 							<input type="number" id="cost" step="0.01" min="0.01" required />
+						</div>
+						<div class="form-group">
+							<label for="liters">Liter fyldt:</label>
+							<input type="number" id="liters" step="0.01" min="0.1" required />
 						</div>
 						<div class="form-group">
 							<label for="odometer">Kilometerstand (km):</label>

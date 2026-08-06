@@ -2,7 +2,7 @@
   "name": "Fuel Tracker",
   "short_name": "FuelTracker",
   "description": "A Progressive Web App for tracking fuel consumption and expenses.",
-  "theme_color": "#4CAF50",
+  "theme_color": "#3498db",
   "background_color": "#F5F5F5",
   "display": "standalone",
   "orientation": "portrait",
