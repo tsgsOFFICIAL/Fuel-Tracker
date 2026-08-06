@@ -25,11 +25,19 @@
 	<body>
 		<!-- PWA Install Prompt -->
 		<article id="pwa-install-banner" class="hidden">
-			<img id="pwa-close-prompt" src="./assets/img/icon-close.png" alt="luk ikon" loading="lazy" />
-			<section class="content">
-				<span class="title">Tanksporer</span>
-				<span class="description">Sporer brændstofforbrug og udgifter</span>
-			</section>
+			<button id="pwa-close-prompt" class="pwa-close-btn" type="button" aria-label="Luk">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+			<div class="pwa-banner-main">
+				<img class="pwa-banner-icon" src="./assets/img/logo.png" alt="" loading="lazy" />
+				<section class="content">
+					<span class="title">Tanksporer</span>
+					<span class="description">Sporer brændstofforbrug og udgifter</span>
+				</section>
+			</div>
 			<section class="call-to-action">
 				<button id="pwa-install-button" type="button">Installer App</button>
 			</section>
@@ -45,71 +53,93 @@
 			</header>
 
 			<main>
-				<!-- Statistics Section -->
-				<section class="stats-section">
-					<div class="stat-card">
-						<h3>Gennemsnitligt forbrug</h3>
-						<p id="avg-consumption">0 km/l</p>
-					</div>
-					<div class="stat-card">
-						<h3>Total distance</h3>
-						<p id="total-distance">0 km</p>
-					</div>
-					<div class="stat-card">
-						<h3>Samlede omkostninger</h3>
-						<p id="total-cost">0,00</p>
-					</div>
-				</section>
+				<!-- Tab Navigation -->
+				<div class="tab-bar">
+					<button class="tab-btn active" type="button" data-tab="overview">Oversigt</button>
+					<button class="tab-btn" type="button" data-tab="history">Historik</button>
+				</div>
 
-				<!-- Monthly Statistics -->
-				<section class="monthly-stats">
-					<h2>Månedlig statistik</h2>
-					<div id="monthly-stats-container">
-						<p class="empty-state">Ingen data tilgængelige endnu</p>
-					</div>
-				</section>
-
-				<!-- Efficiency Trend -->
-				<section class="trend-section">
-					<h2>Effektivitetsudvikling</h2>
-					<div id="trend-chart-container">
-						<p class="empty-state">Ingen data tilgængelige endnu</p>
-					</div>
-				</section>
-
-				<!-- Fuel-up History -->
-				<section class="fuel-ups">
-					<div class="section-header">
-						<h2>Tank Historik</h2>
-						<div class="header-actions">
-							<button id="export-btn" class="icon-btn" type="button" title="Eksporter data">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-									<polyline points="7 10 12 15 17 10"></polyline>
-									<line x1="12" y1="15" x2="12" y2="3"></line>
-								</svg>
-							</button>
-							<button id="import-btn" class="icon-btn" type="button" title="Importer data">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-									<polyline points="17 8 12 3 7 8"></polyline>
-									<line x1="12" y1="3" x2="12" y2="15"></line>
-								</svg>
-							</button>
-							<input type="file" id="import-file" accept="application/json" hidden />
-							<button id="add-fuel-btn" class="add-btn" title="Tilføj tankning">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<line x1="12" y1="5" x2="12" y2="19"></line>
-									<line x1="5" y1="12" x2="19" y2="12"></line>
-								</svg>
-							</button>
+				<!-- Overview Tab -->
+				<div id="view-overview" class="tab-view active">
+					<!-- Statistics Section -->
+					<section class="stats-section">
+						<div class="stat-card">
+							<h3>Gennemsnitligt forbrug</h3>
+							<p id="avg-consumption">0 km/l</p>
 						</div>
-					</div>
-					<div id="fuel-ups-list">
-						<p class="empty-state">Ingen tankning registreret endnu</p>
-					</div>
-				</section>
+						<div class="stat-card">
+							<h3>Total distance</h3>
+							<p id="total-distance">0 km</p>
+						</div>
+						<div class="stat-card">
+							<h3>Samlede omkostninger</h3>
+							<p id="total-cost">0,00</p>
+						</div>
+					</section>
+
+					<!-- Monthly Statistics -->
+					<section class="monthly-stats">
+						<h2>Månedlig statistik</h2>
+						<div id="monthly-stats-container">
+							<p class="empty-state">Ingen data tilgængelige endnu</p>
+						</div>
+					</section>
+
+					<!-- Efficiency Trend -->
+					<section class="trend-section">
+						<h2>Effektivitetsudvikling</h2>
+						<div id="trend-chart-container">
+							<p class="empty-state">Ingen data tilgængelige endnu</p>
+						</div>
+					</section>
+
+					<!-- Price Trend -->
+					<section class="trend-section">
+						<h2>Prisudvikling</h2>
+						<div id="price-chart-container">
+							<p class="empty-state">Ingen data tilgængelige endnu</p>
+						</div>
+					</section>
+				</div>
+
+				<!-- History Tab -->
+				<div id="view-history" class="tab-view">
+					<!-- Fuel-up History -->
+					<section class="fuel-ups">
+						<div class="section-header">
+							<h2>Tank Historik</h2>
+							<div class="header-actions">
+								<button id="export-btn" class="icon-btn" type="button" title="Eksporter data">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+										<polyline points="7 10 12 15 17 10"></polyline>
+										<line x1="12" y1="15" x2="12" y2="3"></line>
+									</svg>
+								</button>
+								<button id="import-btn" class="icon-btn" type="button" title="Importer data">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+										<polyline points="17 8 12 3 7 8"></polyline>
+										<line x1="12" y1="3" x2="12" y2="15"></line>
+									</svg>
+								</button>
+								<input type="file" id="import-file" accept="application/json" hidden />
+							</div>
+						</div>
+						<div id="fuel-ups-list">
+							<p class="empty-state">Ingen tankning registreret endnu</p>
+						</div>
+					</section>
+				</div>
 			</main>
+
+			<!-- Always-visible add button -->
+			<button id="add-fuel-btn" class="fab-btn" type="button" title="Tilføj tankning">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="12" y1="5" x2="12" y2="19"></line>
+					<line x1="5" y1="12" x2="19" y2="12"></line>
+				</svg>
+			</button>
 
 			<!-- Modal -->
 			<div id="modal" class="modal">

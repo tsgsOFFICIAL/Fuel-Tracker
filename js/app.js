@@ -11,9 +11,11 @@ const totalDistanceEl = document.getElementById("total-distance");
 const totalCostEl = document.getElementById("total-cost");
 const monthlyStatsContainer = document.getElementById("monthly-stats-container");
 const trendChartContainer = document.getElementById("trend-chart-container");
+const priceChartContainer = document.getElementById("price-chart-container");
 const exportBtn = document.getElementById("export-btn");
 const importBtn = document.getElementById("import-btn");
 const importFileInput = document.getElementById("import-file");
+const tabButtons = document.querySelectorAll(".tab-btn");
 
 const svgAttrs = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
 const editIconSvg = `<svg ${svgAttrs}><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>`;
@@ -33,6 +35,7 @@ window.addEventListener("click", (e) => {
 		closeModal();
 	}
 });
+tabButtons.forEach((btn) => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
 
 dateInput.valueAsDate = new Date();
 dateInput.max = getTodayLocalISOString();
@@ -41,6 +44,12 @@ renderFuelUps();
 updateStats();
 updateMonthlyStats();
 renderTrendChart();
+renderPriceTrendChart();
+
+function switchTab(tab) {
+	tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tab));
+	document.querySelectorAll(".tab-view").forEach((view) => view.classList.toggle("active", view.id === `view-${tab}`));
+}
 
 function openModal(fuelUp = null) {
 	editingFuelUpId = fuelUp ? fuelUp.id : null;
@@ -170,6 +179,7 @@ function saveFuelUp(e) {
 	updateStats();
 	updateMonthlyStats();
 	renderTrendChart();
+	renderPriceTrendChart();
 	closeModal();
 }
 
@@ -197,6 +207,7 @@ function deleteFuelUp(id) {
 		updateStats();
 		updateMonthlyStats();
 		renderTrendChart();
+		renderPriceTrendChart();
 	}
 }
 
@@ -267,6 +278,7 @@ function importFuelUps(e) {
 		updateStats();
 		updateMonthlyStats();
 		renderTrendChart();
+		renderPriceTrendChart();
 		importFileInput.value = "";
 	};
 	reader.readAsText(file);
@@ -385,11 +397,9 @@ function updateMonthlyStats() {
 		.join("");
 }
 
-function renderTrendChart() {
-	const validFuelUps = getSortedFuelUps().filter((f) => f.efficiency !== null);
-
-	if (validFuelUps.length < 2) {
-		trendChartContainer.innerHTML = '<p class="empty-state">Tilføj flere tankninger for at se udviklingen</p>';
+function renderLineChart(container, dataPoints, unit) {
+	if (dataPoints.length < 2) {
+		container.innerHTML = '<p class="empty-state">Ingen data tilgængelige endnu</p>';
 		return;
 	}
 
@@ -397,35 +407,47 @@ function renderTrendChart() {
 	const height = 200;
 	const padding = 30;
 
-	const values = validFuelUps.map((f) => f.efficiency);
+	const values = dataPoints.map((d) => d.value);
 	const minVal = Math.min(...values);
 	const maxVal = Math.max(...values);
 	const range = maxVal - minVal || 1;
 
-	const stepX = (width - padding * 2) / (validFuelUps.length - 1);
-	const points = validFuelUps.map((f, index) => ({
+	const stepX = (width - padding * 2) / (dataPoints.length - 1);
+	const points = dataPoints.map((d, index) => ({
 		x: padding + index * stepX,
-		y: height - padding - ((f.efficiency - minVal) / range) * (height - padding * 2),
-		efficiency: f.efficiency,
-		date: f.date
+		y: height - padding - ((d.value - minVal) / range) * (height - padding * 2),
+		value: d.value,
+		date: d.date
 	}));
 
 	const linePoints = points.map((p) => `${p.x},${p.y}`).join(" ");
 	const dots = points
 		.map(
 			(p) =>
-				`<circle class="trend-dot" cx="${p.x}" cy="${p.y}" r="3"><title>${formatDate(p.date)}: ${p.efficiency.toFixed(2)} km/l</title></circle>`
+				`<circle class="trend-dot" cx="${p.x}" cy="${p.y}" r="3"><title>${formatDate(p.date)}: ${p.value.toFixed(2)} ${unit}</title></circle>`
 		)
 		.join("");
 
-	trendChartContainer.innerHTML = `
+	container.innerHTML = `
         <svg class="trend-chart-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
             <polyline class="trend-line" points="${linePoints}" />
             ${dots}
-            <text class="trend-axis-label" x="${padding}" y="12">${maxVal.toFixed(1)} km/l</text>
-            <text class="trend-axis-label" x="${padding}" y="${height - padding + 15}">${minVal.toFixed(1)} km/l</text>
+            <text class="trend-axis-label" x="${padding}" y="12">${maxVal.toFixed(1)} ${unit}</text>
+            <text class="trend-axis-label" x="${padding}" y="${height - padding + 15}">${minVal.toFixed(1)} ${unit}</text>
         </svg>
     `;
+}
+
+function renderTrendChart() {
+	const dataPoints = getSortedFuelUps()
+		.filter((f) => f.efficiency !== null)
+		.map((f) => ({ date: f.date, value: f.efficiency }));
+	renderLineChart(trendChartContainer, dataPoints, "km/l");
+}
+
+function renderPriceTrendChart() {
+	const dataPoints = getSortedFuelUps().map((f) => ({ date: f.date, value: f.cost / f.liters }));
+	renderLineChart(priceChartContainer, dataPoints, "DKK/L");
 }
 
 function formatDate(dateString) {
