@@ -185,19 +185,8 @@ function saveFuelUp(e) {
 
 function deleteFuelUp(id) {
 	if (confirm("Er du sikker på, at du vil slette denne post?")) {
-		// Find the fuel-up to delete
 		const fuelUpToDelete = fuelUps.find((fuelUp) => fuelUp.id === id);
 		if (!fuelUpToDelete) return;
-
-		// Check if it's the earliest or latest fuel-up by date
-		const sortedFuelUps = getSortedFuelUps();
-		const isEarliest = sortedFuelUps[0]?.id === id;
-		const isLast = sortedFuelUps[sortedFuelUps.length - 1]?.id === id;
-
-		if (!isEarliest && !isLast) {
-			alert("Kun den tidligste eller seneste tankning kan slettes for at opretholde nøjagtige distanceberegninger.");
-			return;
-		}
 
 		fuelUps = fuelUps.filter((fuelUp) => fuelUp.id !== id);
 		recalculateAll();
